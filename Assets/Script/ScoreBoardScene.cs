@@ -12,6 +12,7 @@ public class ScoreBoardScene : MonoBehaviour
 	public Text[] Ranked_Text;
 
 	public int CurrentScore = 0;
+	public int OriginScore = 0;
 	public int[] Ranked_Score;
 
 	private void Start()
@@ -19,8 +20,9 @@ public class ScoreBoardScene : MonoBehaviour
 		Ranked_Score = new int[11];
 
 		CurrentScore = PlayerPrefs.GetInt("CurrentScore");
+		OriginScore = CurrentScore;
 
-		for(int i = 0; i <Ranked_Score.Length; i++)
+		for (int i = 0; i <Ranked_Score.Length; i++)
 		{
 			Ranked_Score[i] = 0;
 		}
@@ -85,22 +87,32 @@ public class ScoreBoardScene : MonoBehaviour
 		}
 	}
 
-	IEnumerator BlinkCurrentScore()
+	private int FindCurrentScoreText()
 	{
 		int i;
-		for(i = 0; i < Ranked_Score.Length; i++)
+		for (i = 0; i < Ranked_Score.Length; i++)
 		{
-			if (Ranked_Score[i] == CurrentScore)
+			if (Ranked_Score[i] == OriginScore)
 				break;
 		}
 
+		Debug.Log("RankScore i : " + Ranked_Score[i] + " CurrentScore : " + OriginScore);
+		Debug.Log(i);
+
+		return i;
+	}
+
+	IEnumerator BlinkCurrentScore()
+	{
 		while(true)
 		{
-			if(i - 1 >= 0 && i - 1 <= Ranked_Text.Length)
+			int i = FindCurrentScoreText();
+
+			if(i >= 0)
 			{
-				Ranked_Text[i - 1].color = new Color(0.4575472f, 0.749798f, 1f, 1f);
+				Ranked_Text[i].color = new Color(0.4575472f, 0.749798f, 1f, 1f);
 				yield return new WaitForSeconds(0.5f);
-				Ranked_Text[i - 1].color = new Color(0f, 0f, 0f, 1f);
+				Ranked_Text[i].color = new Color(0f, 0f, 0f, 1f);
 				yield return new WaitForSeconds(0.5f);
 			}
 			else
