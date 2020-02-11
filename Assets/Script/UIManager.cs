@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
 
 	public void CilckStartButton()
 	{
-		if(!GameManager.Getinstance().isStart)
+		if(!GameManager.Getinstance().isStart && !GameManager.Getinstance().b_NextStage)
 		{
 			GameManager.Getinstance().isStart = true;
 			GameManager.Getinstance().isSpawn = true;
